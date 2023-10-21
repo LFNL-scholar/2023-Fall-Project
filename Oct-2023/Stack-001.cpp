@@ -9,7 +9,7 @@ private:
     int topIndex;
 
 public:
-    Stack():topIndex(-1){}
+    Stack():topIndex(-1){} // 初始化列表
 
     // 将元素压入栈
     void push(int value){
