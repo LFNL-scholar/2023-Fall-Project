@@ -11,7 +11,7 @@ struct BiNode{
 
 int sumAllNodes(BiNode* root){
     if(root==nullptr){
-        return 0;
+        return;
     }else{
         return root->data+sumAllNodes(root->lchild)+sumAllNodes(root->rchild);
     }
