@@ -11,7 +11,7 @@ struct BiNode{
 
 int countNodes(BiNode* root){
     if(root==nullptr){
-        return;
+        return 0;
     }else{
         return 1+countNodes(root->lchild)+countNodes(root->rchild);
     }
