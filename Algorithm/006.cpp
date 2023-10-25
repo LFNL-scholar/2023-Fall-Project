@@ -1,21 +1,29 @@
 #include<iostream>
 #include<cmath>
-#include<iomanip>
 using namespace std;
 
 int main(){
     int n;
     cin>>n;
     int count=0;
-    for(int j=0;j<n-count;j++){
-        for(int i=0;i<n;i++){
-            if(n<9){
-                cout<<"0"<<i+1;
-            }else{
-                cout<<i+1;
-            }
+    for(int i=1;i<=n;i++){
+        count+=i;
+    }
+    int sum=0;
+    int a=n;
+    for(int i=1;i<=count;i++){
+        if(i/10==0){
+            cout<<"0"<<i;
+            sum++;
+        }else{
+            cout<<i;
+            sum++;
         }
-        count++;
+        if(sum==n){
+            cout<<endl;
+            a--;
+            n=sum+a;
+        }
     }
     return 0;
 }
