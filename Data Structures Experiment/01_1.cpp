@@ -23,13 +23,7 @@ public:
         }
     }
 
-    void input(const vector<int>& vec){
-        for (int value : vec) {
-            append(value);
-        }
-    }
-
-    void append(int value){
+    void insert(int value){
         Node* newNode=new Node(value);
         if(head==NULL){
             head=newNode;
@@ -40,15 +34,6 @@ public:
             }
             current->next=newNode;
         }
-    }
-
-    void printList(){
-        Node* current=head;
-        while(current!=NULL){
-            cout<<current->data<<" ";
-            current=current->next;
-        }
-        cout<<endl;
     }
 
     void reverse(){
@@ -63,18 +48,36 @@ public:
         }
         head=prev;
     }
+
+    void input(const vector<int>& vec){
+        for (int value : vec) {
+            insert(value);
+        }
+    }
+
+    void printList(){
+        Node* current=head;
+        while(current!=NULL){
+            cout<<current->data<<" ";
+            current=current->next;
+        }
+        cout<<endl;
+    }
+
+    void compare(){
+        cout<<"Before List: ";
+        this->printList();
+        this->reverse();
+        cout<<"After List: ";
+        this->printList();
+    }
 };
 
 int main(){
     vector<int> vector={1,2,3,4,5,6,7,8,9,10};
     LinkList List;
     List.input(vector);
-
-    cout<<"Before List: ";
-    List.printList();
-    List.reverse();
-    cout<<"After List: ";
-    List.printList();
+    List.compare();
 
     return 0;
 }
