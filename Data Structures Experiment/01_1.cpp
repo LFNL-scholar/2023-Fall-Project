@@ -1,6 +1,8 @@
+//以单链表作为存储结构，实现线性表的就地逆置
 #include<iostream>
 #include<vector>
 using namespace std;
+
 class LinkList{
 private:
     struct Node{
@@ -21,7 +23,7 @@ public:
         }
     }
 
-    void Input(const vector<int>& vec){
+    void input(const vector<int>& vec){
         for (int value : vec) {
             append(value);
         }
@@ -66,7 +68,7 @@ public:
 int main(){
     vector<int> vector={1,2,3,4,5,6,7,8,9,10};
     LinkList List;
-    List.Input(vector);
+    List.input(vector);
 
     cout<<"Before List: ";
     List.printList();
