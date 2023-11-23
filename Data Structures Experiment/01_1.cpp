@@ -56,8 +56,8 @@ public:
         Node* current=head;
         Node* next=NULL;
         while(current!=NULL){
-            next=current->next; // 将 next 指针指向当前节点的下一个节点
-            current->next=prev; // 反转当前节点的指针，指向前一个节点
+            next=current->next;
+            current->next=prev;
             prev=current;
             current=next;
         }
