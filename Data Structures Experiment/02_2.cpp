@@ -17,7 +17,7 @@ public:
     ~CircularQueue(){
         if(rear!=NULL){
             Node* current=rear->next;
-            while(current!=rear){
+            while (current!=rear) {
                 Node* temp=current;
                 current=current->next;
                 delete temp;
@@ -26,15 +26,17 @@ public:
         }
     }
 
-    void enqueue(int value){
-        Node* newNode=new Node(value);
-        if(rear==NULL){
-            newNode->next=newNode; // 将新节点的 next 指针指向自己
-            rear=newNode; // 将 rear 指针指向新节点，形成一个只有一个节点的循环链表
-        }else{
-            newNode->next=rear->next;
-            rear->next=newNode;
-            rear=newNode;
+    void enqueue(const vector<int>& vec){
+        for (const int& value:vec){
+            Node* newNode=new Node(value);
+            if(rear==NULL){
+                newNode->next=newNode;
+                rear=newNode;
+            }else{
+                newNode->next=rear->next;
+                rear->next=newNode;
+                rear=newNode;
+            }
         }
     }
 
@@ -44,40 +46,44 @@ public:
         }else{
             Node* front=rear->next;
             if(rear==front){
+                cout<<"Deque element: "<<front->data<<endl;
                 delete rear;
                 rear=NULL;
-            }else{
+            } else {
                 rear->next=front->next;
+                cout<<"Deque element: "<<front->data<<endl;
                 delete front;
             }
         }
     }
 
     void printQueue(){
-        if(rear==NULL){
-            cout<<"Queue is empty."<<endl;
+        if(rear==NULL) {
+            cout<<"Queue is empty."<< endl;
         }else{
             Node* current=rear->next;
             do{
-                cout<<current->data<<" ";
+                cout<<current->data << " ";
                 current=current->next;
             }while(current!=rear->next);
             cout<<endl;
         }
     }
 
-    void input()
+    void compare(){
+        cout<<"Before queue: ";
+        this->printQueue();
+        this->dequeue();
+        cout<<"After queue: ";
+        this->printQueue();
+
+    }
 };
 
 int main(){
-    CircularQueue queue;
-    queue.enqueue(1);
-    queue.enqueue(2);
-    queue.enqueue(3);
-    cout<<"Queue: ";
-    queue.printQueue();
-    queue.dequeue();
-    cout<<"Queue after dequeue: ";
-    queue.printQueue();
+    vector<int> vector={1,2,3,4,5,6,7};
+    CircularQueue Queue;
+    Queue.enqueue(vector);
+    Queue.compare();
     return 0;
 }
