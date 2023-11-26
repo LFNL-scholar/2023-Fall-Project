@@ -1,4 +1,3 @@
-//实验二：数据类型和数组
 package Java_Experiment;
 
 public class DataType {
