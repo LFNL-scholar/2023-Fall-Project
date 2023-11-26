@@ -1,6 +1,20 @@
 {
     "configurations": [
         {
+            "type": "java",
+            "name": "DataType",
+            "request": "launch",
+            "mainClass": "Java_Experiment.DataType",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
+            "name": "DataTypeAndArray",
+            "request": "launch",
+            "mainClass": "DataTypeAndArray",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
             "name": "(gdb) 启动",
             "type": "cppdbg",
             "request": "launch",
