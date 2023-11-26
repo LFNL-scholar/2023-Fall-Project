@@ -10,6 +10,11 @@ public class DataType {
         char charValue='A';
         boolean booleanValue=true;
 
+        System.out.println(intValue);
+        System.out.println(doubleValue);
+        System.out.println(charValue);
+        System.out.println(booleanValue);
+
         // 输出各种类型的占用内存大小
         System.out.println("int占用内存大小: " + Integer.BYTES + " bytes");
         System.out.println("double占用内存大小: " + Double.BYTES + " bytes");
@@ -24,9 +29,6 @@ public class DataType {
 
         // 分别定义一个基本类型的数组
         int[] intArray = {1, 2, 3, 4, 5};
-        double[] doubleArray={1.1, 2.2, 3.3};
-        char[] charArray={'a','b','c'};
-        boolean[] booleanArray={true,false,true};
 
         // 定义一个对象类型的数组
         String[] stringArray = {"Apple", "Banana", "Orange"};
