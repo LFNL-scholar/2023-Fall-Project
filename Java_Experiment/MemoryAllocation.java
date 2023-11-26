@@ -1,6 +1,6 @@
 package Java_Experiment;
 
-public class MemoryAllocatio {
+public class MemoryAllocation {
     // 栈内存溢出
     private static void stackOverflow(){
         stackOverflow(); // 递归调用，导致栈内存溢出
