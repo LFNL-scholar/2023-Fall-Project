@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Car",
+            "request": "launch",
+            "mainClass": "Java_Experiment.Car",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
             "name": "MemoryAllocatio",
             "request": "launch",
             "mainClass": "Java_Experiment.MemoryAllocatio",
