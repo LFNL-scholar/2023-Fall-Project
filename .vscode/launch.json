@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Java_Experiment.Main",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
             "name": "Car",
             "request": "launch",
             "mainClass": "Java_Experiment.Car",

@@ -15,6 +15,10 @@ public class Person {
     private void privateMethod(){
         System.out.println("This is a private method.");
     }
+    public void someOtherMethod() {
+        // 调用 privateMethod()
+        privateMethod();
+    }
 }
 
 class Student extends Person {
