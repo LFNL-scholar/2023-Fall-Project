@@ -99,7 +99,7 @@ public:
         this->inOrder();
         this->postOrder();
         this->convertNegatives();
-        cout<<"--------------";
+        cout<<"--------------"<<endl;;
         this->preOrder();
         this->inOrder();
         this->postOrder();
