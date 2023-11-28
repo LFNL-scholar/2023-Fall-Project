@@ -17,6 +17,14 @@ public:
         adjacencyMatrix[end][start]=1;
     }
 
+    void addEdges(const vector<vector<int>>& edges) {
+        for (const auto& edge : edges) {
+            if (edge.size() == 2) {
+                addEdge(edge[0], edge[1]);
+            }
+        }
+    }
+
     void DFS(int start,vector<bool>& visited){
         cout<<start<<" ";
         visited[start]=true;
@@ -53,14 +61,8 @@ public:
 
 int main(){
     Graph graph(6);
-    graph.addEdge(0,1);
-    graph.addEdge(0,2);
-    graph.addEdge(0,5);
-    graph.addEdge(1,2);
-    graph.addEdge(5,3);
-    graph.addEdge(3,2);
-    graph.addEdge(3,4);
-    graph.addEdge(2,4);
+    vector<vector<int>> edges={{0,1},{0,2},{0,5},{1,2},{5,3},{3,2},{3,4},{2,4}};
+    graph.addEdges(edges);
 
     cout<<"DFS Traversal: ";
     vector<bool> visitedDFS(6,false);
