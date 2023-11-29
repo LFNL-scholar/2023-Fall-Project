@@ -2,7 +2,7 @@
 
 ## 项目描述
 
-这个仓库包含了我在2023年大二上学期期间开发的一些零碎的代码和算法实现。这些项目包括了各种编程语言和算法的示例，用于学术学习和个人兴趣。
+这个仓库包含了我在2023年大二上学期期间写的一些零碎的代码和算法实现。这些项目包括了各种编程语言和算法的示例，用于学术学习和个人兴趣。
 
 ## 内容
 
@@ -15,6 +15,6 @@
 1. 克隆此仓库到本地计算机：
 
    ```shell
-   git clone https://github.com/你的用户名/2023-Fall-Project.git
+   git clone https://github.com/LFNL-scholar/2023-Fall-Project.git
 
 #### Have a nice day！
