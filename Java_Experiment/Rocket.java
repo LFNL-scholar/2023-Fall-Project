@@ -1,4 +1,6 @@
+package Java_Experiment;
 import java.nio.CharBuffer;
+
 public class Rocket {
     protected String name;
 
@@ -37,6 +39,10 @@ interface Reusable {
     void land();
 }
 
+interface Readable {
+    int read(CharBuffer cb);
+}
+
 class FalconHeavy extends Falcon9 implements Readable, Reusable {
     private static final String HEAVY_TYPE = "Heavy-lift";
 
@@ -61,5 +67,22 @@ class FalconHeavy extends Falcon9 implements Readable, Reusable {
 
     public static String getHeavyType() {
         return HEAVY_TYPE;
+    }
+}
+
+class Out{
+    public static void main(String[] args) {
+        Rocket myRocket=new Rocket("LFNL Rocket");
+        myRocket.launch();
+        System.out.println("Rocket Name: "+myRocket.getName());
+        Falcon9 myFalcon9=new Falcon9("LFNL Falcon9", 22000);
+        myFalcon9.launch();
+        System.out.println("Falcon 9 Payload Capacity: "+myFalcon9.getPayloadCapacity());
+
+        FalconHeavy myFalconHeavy=new FalconHeavy("LFnl Falcon Heavy", 64000);
+        myFalconHeavy.launch();
+        myFalconHeavy.land();
+        System.out.println("Falcon Heavy Payload Capacity: "+myFalconHeavy.getPayloadCapacity());
+        System.out.println("Falcon Heavy Type: "+FalconHeavy.getHeavyType());
     }
 }

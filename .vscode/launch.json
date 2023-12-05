@@ -2,6 +2,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Out",
+            "request": "launch",
+            "mainClass": "Java_Experiment.Out",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
+            "name": "FalconHeavy",
+            "request": "launch",
+            "mainClass": "Java_Experiment.FalconHeavy",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
+            "name": "Car",
+            "request": "launch",
+            "mainClass": "Car",
+            "projectName": "C++ Project_e0100e74"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Java_Experiment.Main",
