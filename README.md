@@ -28,7 +28,7 @@
 
 ## 如何使用
 
-如果你是一位同学或开发者，你可以将这个仓库克隆到你的本地机器：
+如果你也是一位学生或者感兴趣的朋友，你可以将这个仓库克隆到你的本地机器：
 
 ```bash
 git clone https://github.com/LFNL-scholar/2023-Fall-Project.git
