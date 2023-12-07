@@ -33,6 +33,7 @@
 ```bash
 git clone https://github.com/LFNL-scholar/2023-Fall-Project.git
 ```
+并且可以以文件夹的方式全部在VS Code 中打开，祝你好运！
 ### 克隆失败的解决办法
 
 #### 检查网络连接：
