@@ -30,7 +30,7 @@ public:
         visited[start]=true;
         for(int neighbor:adjacencyList[start]){
             if(!visited[neighbor]){
-                DFS(neighbor,visited)
+                DFS(neighbor,visited);
             }
         }
     }
