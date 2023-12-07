@@ -33,6 +33,19 @@
 ```bash
 git clone https://github.com/LFNL-scholar/2023-Fall-Project.git
 ```
+### 克隆失败的解决办法
+
+#### 检查网络连接：
+确保你的网络连接稳定，没有防火墙或代理阻止Git操作。有时候，尝试切换到不同的网络可能有助于解决问题。
+
+#### 尝试使用Git代理：
+如果你在使用代理，请确保Git已正确配置以使用代理。
+
+```bash
+git config --global http.proxy http://your-proxy-url:port
+git config --global https.proxy https://your-proxy-url:port
+```
+请将 "your-proxy-url" 和 "port" 替换为你实际使用的代理地址和端口。
 
 ## 最后的话
 
