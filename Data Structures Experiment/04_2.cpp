@@ -59,7 +59,15 @@ public:
 };
 
 int main(){
-    Graph Graph(6);
+    Graph graph(6);
+    vector<vector<int>> edges={{0,1},{0,2},{0,5},{1,2},{5,3},{3,2},{3,4},{2,4}};
+    graph.addEdges(edges);
 
+    cout << "DFS Traversal: ";
+    vector<bool> visitedDFS(6, false);
+    graph.DFS(0, visitedDFS);
+    cout << endl;
+
+    graph.BFS(0);
     return 0;
 }
