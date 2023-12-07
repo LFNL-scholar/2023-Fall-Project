@@ -52,10 +52,12 @@ void BubbleSort2(SqList *L){
 }
 
 void input(SqList *L,int arr[]){
-    for(int i=0;i<L->length;i++){
-        L->arr[i]=arr[i];
+    L->arr[0]=0;
+    for(int i=1;i<L->length;i++){
+        L->arr[i]=arr[i-1];
     }
 }
+
 
 void print(SqList *L){
     for(int i=0;i<L->length;i++){
