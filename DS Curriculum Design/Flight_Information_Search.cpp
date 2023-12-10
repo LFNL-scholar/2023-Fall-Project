@@ -1,83 +1,107 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <algorithm>
+#include<iostream>
+#include<fstream>
+#include<sstream>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-class Flight {
+class Flight{
 public:
-    std::string flightNumber;
-    std::string departure;
-    std::string destination;
-    std::string departureTime;
-    std::string arrivalTime;
-    std::string aircraftType;
+    string flightNumber;
+    string departure;
+    string destination;
+    string departureTime;
+    string arrivalTime;
+    string aircraftType;
     double ticketPrice;
 
-    // 构造函数
-    Flight(std::string number, std::string depart, std::string dest, std::string departTime, std::string arriveTime, std::string aircraft, double price)
-        : flightNumber(number), departure(depart), destination(dest), departureTime(departTime), arrivalTime(arriveTime), aircraftType(aircraft), ticketPrice(price) {}
+    Flight(string number,string depart,string dest,string departTime,string arriveTime,string aircraft,double price)
+        : flightNumber(number),departure(depart),destination(dest),departureTime(departTime),arrivalTime(arriveTime),aircraftType(aircraft),ticketPrice(price) {}
 };
 
-// 函数声明
-void sortFlights(std::vector<Flight>& flights);
-int binarySearch(const std::vector<Flight>& flights, const std::string& key);
+class FlightManager{
+private:
+    vector<Flight> flights;
 
-int main() {
-    // 示例数据
-    std::vector<Flight> flights = {
-        {"AB123", "CityA", "CityB", "08:00", "10:00", "Boeing 737", 300.0},
-        {"CD456", "CityB", "CityC", "12:00", "14:00", "Airbus A320", 250.0},
-        {"EF789", "CityC", "CityD", "16:00", "18:00", "Boeing 747", 400.0},
-        // 添加更多航班信息...
-    };
+public:
+    // 从文件中读取航班信息
+    void readFlightsFromFile(const string& filename){
+        // 打开指定文件以进行读取操作
+        ifstream inputFile(filename);
+        if(!inputFile.is_open()){
+            cerr<<"Error opening file for reading."<<endl;
+        }
+        string line;
+        // 逐行读取文件
+        while(getline(inputFile,line)){
+            // 创建一个字符串流，以便按空格分隔并解析当前行的数据
+            istringstream iss(line);
 
-    // 排序航班信息
-    sortFlights(flights);
+            // 定义变量以存储从文件中读取的各个字段
+            string number,depart,dest,departTime,arriveTime,aircraft;
+            double price;
 
-    // 显示排序后的航班信息
-    std::cout << "Sorted Flights:\n";
-    for (const auto& flight : flights) {
-        std::cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime << " Price: $" << flight.ticketPrice << "\n";
+            // 尝试从字符串流中解析每个字段
+            if (!(iss >> number >> depart >> dest >> departTime >> arriveTime >> aircraft >> price)) {
+                cerr << "Error parsing line in file.\n";
+                continue; // 跳过解析错误的行，继续处理下一行
+            }
+
+            // 创建一个 Flight 对象并将其添加到 flights 向量中
+            flights.emplace_back(number, depart, dest, departTime, arriveTime, aircraft, price);
+        }
+
+        // 关闭文件
+        inputFile.close();   
     }
 
-    // 查询航班信息
-    std::string searchKey = "CD456";  // 要查询的航班号
-    int index = binarySearch(flights, searchKey);
+    // 按航班号排序
+    void sortFlightsByNumber() {
+        sort(flights.begin(), flights.end(), [](const Flight& a, const Flight& b) {
+            return a.flightNumber < b.flightNumber;
+        });
+    }
 
-    // 显示查询结果
-    if (index != -1) {
-        std::cout << "Flight found:\n";
-        std::cout << flights[index].flightNumber << " " << flights[index].departure << " to " << flights[index].destination << " Departure: " << flights[index].departureTime << " Arrival: " << flights[index].arrivalTime << " Price: $" << flights[index].ticketPrice << "\n";
+    // 通过二分查找快速查询航班信息
+    bool searchFlightByNumber(const std::string& number) {
+        return std::binary_search(flights.begin(), flights.end(), Flight(number, "", "", "", "", "", 0),
+                                   [](const Flight& a, const Flight& b) {
+                                       return a.flightNumber < b.flightNumber;
+                                   });
+    }
+
+    // 显示航班信息
+    void displayFlights() {
+        for (const auto& flight : flights) {
+            std::cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
+                      << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
+                      << " Aircraft: " << flight.aircraftType << " Price: $" << flight.ticketPrice << "\n";
+        }
+    }
+};
+
+
+int main() {
+    FlightManager flightManager;
+
+    // 读取航班信息从文件flights.txt
+    flightManager.readFlightsFromFile("FIS_Info.txt");
+
+    // 按航班号排序
+    flightManager.sortFlightsByNumber();
+
+    // 显示排序后的航班信息
+    cout << "Sorted Flights:\n";
+    flightManager.displayFlights();
+
+    // 快速查询航班信息
+    string searchFlightNumber = "TK777";
+    if (flightManager.searchFlightByNumber(searchFlightNumber)) {
+        cout << "Flight " << searchFlightNumber << " found.\n";
     } else {
-        std::cout << "Flight not found.\n";
+        cout << "Flight " << searchFlightNumber << " not found.\n";
     }
 
     return 0;
-}
-
-// 排序航班信息
-void sortFlights(std::vector<Flight>& flights) {
-    std::sort(flights.begin(), flights.end(), [](const Flight& a, const Flight& b) {
-        return a.flightNumber < b.flightNumber;
-    });
-}
-
-// 二分查找航班信息
-int binarySearch(const std::vector<Flight>& flights, const std::string& key) {
-    int left = 0;
-    int right = flights.size() - 1;
-
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-
-        if (flights[mid].flightNumber == key) {
-            return mid;  // 找到航班，返回索引
-        } else if (flights[mid].flightNumber < key) {
-            left = mid + 1;  // 在右半边继续查找
-        } else {
-            right = mid - 1;  // 在左半边继续查找
-        }
-    }
-
-    return -1;  // 未找到航班
 }
