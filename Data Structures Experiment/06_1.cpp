@@ -31,9 +31,11 @@ private:
 public:
     InsertionSort():head(NULL) {}
 
-    void insert(int value){
-        ListNode* newNode=new ListNode(value);
-        insert(head,newNode);
+    void insert(vector<int>& values){
+        for(int value:values){
+            ListNode* newNode=new ListNode(value);
+            insert(head,newNode);
+        }
     }
 
     void sort(){
@@ -64,12 +66,8 @@ public:
 
 int main(){
     InsertionSort list;
-    list.insert(5);
-    list.insert(2);
-    list.insert(8);
-    list.insert(1);
-    list.insert(3);
-
+    vector<int> values={5,2,8,1,3};
+    list.insert(values);
     cout << "Original List: ";
     list.display();
     list.sort();
