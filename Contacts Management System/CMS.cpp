@@ -39,6 +39,52 @@ void addPerson(AddressBooks *abs){
         cout<<"请输入姓名："<<endl;
         cin>>name;
         abs->personArray[abs->m_Size].m_Name=name;
+
+        cout<<"请输入性别："<<endl;
+        cout<<"1--=男"<<endl;
+        cout<<"2---女"<<endl;
+        int sex=0;
+        while(true){
+            cin>>sex;
+            if(sex==1 || sex==2){
+                abs->personArray[abs->m_Size].m_Sex=sex;
+                break;
+            }
+            cout<<"输入有误，请重新输入"<<endl;
+        }
+        
+        cout<<"请输入年龄："<<endl;
+        int age=0;
+        while(true){
+            cin>>age;
+            if(age>=1 &&age<=150){
+                abs->personArray[abs->m_Size].m_Age=age;
+                break;
+            }
+            cout<<"输入有误，请重新输入"<<endl;
+        }
+
+        cout<<"请输入联系电话："<<endl;
+        string phone;
+        while(true){
+            cin>>phone;
+            if(phone.size()==11){
+                abs->personArray[abs->m_Size].m_Phone=phone;
+                break;
+            }
+            cout<<"输入有误，请重新输入"<<endl;
+        }
+
+        cout<<"请输入家庭住址："<<endl;
+        string address;
+        cin>>address;
+        abs->personArray[abs->m_Size].m_Addr=address;
+
+        abs->m_Size++;
+        cout<<"添加成功！"<<endl;
+
+        system("pause"); // 请按任意键继续
+        system("cls"); //清屏操作
     }
 }
 
