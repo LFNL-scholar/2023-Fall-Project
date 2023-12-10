@@ -53,7 +53,7 @@ public:
         }
 
         // 关闭文件
-        inputFile.close();   
+        inputFile.close();
     }
 
     // 按航班号排序
