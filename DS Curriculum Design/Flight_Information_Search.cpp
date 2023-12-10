@@ -103,5 +103,6 @@ int main() {
         cout << "Flight " << searchFlightNumber << " not found.\n";
     }
 
+    system("pause");
     return 0;
 }

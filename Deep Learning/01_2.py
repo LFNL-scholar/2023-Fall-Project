@@ -13,6 +13,6 @@ plt.title('sin & cos')
 plt.legend()
 plt.show()
 
-img=imread('001.png')
+img=imread('Others/001.png')
 plt.imshow(img)
 plt.show()
