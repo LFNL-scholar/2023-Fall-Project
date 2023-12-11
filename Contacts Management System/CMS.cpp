@@ -88,6 +88,68 @@ void addPerson(AddressBooks *abs){
     }
 }
 
+void showPerson(AddressBooks* abs){
+    if(abs->m_Size==0){
+        cout<<"当前记录为空"<<endl;
+    }else{
+        for(int i=0;i<abs->m_Size;i++){
+            cout<<"姓名： "<<abs->personArray[i].m_Name<<"\t";
+            cout<<"性别："<<(abs->personArray[i].m_Sex==1?"男":"女")<<"\t";
+            cout<<"年龄："<<abs->personArray[i].m_Age<<"\t";
+            cout<<"电话："<<abs->personArray[i].m_Phone<<"\t";
+            cout<<"住址："<<abs->personArray[i].m_Addr<<endl;
+        }
+    }
+    system("pause");
+    system("cls");
+}
+
+int isExit(AddressBooks* abs,string name){
+    for(int i=0;i<abs->m_Size;i++){
+        if(abs->personArray[i].m_Name==name){
+            return i;
+        }
+    }
+    return -1;
+}
+
+void deletePerson(AddressBooks* abs){
+    cout<<"请输入您要删除的联系人"<<end;
+    string name;
+    cin>>name;
+    int ret=isExit(abs,name);
+    if(ret!=-1){
+        for(int i=ret;i<abs->m_Size;i++){
+            abs->personArray[i]=abs->personArray[i+1];
+        }
+        abs->m_Size--;
+        cout<<"删除成功"<<endl;
+    }else{
+        cout<<"查无此人"<<endl;
+    }
+    system("pause");
+    system("cls");
+}
+
+void findPerson(AddressBooks* abs){
+    cout<<"请输入你要查找的联系人"<<endl;
+    string name;
+    cin>>name;
+    int ret=isExit(abs,name);
+    if(ret!=-1){
+        cout<<"姓名："<<abs->personArray[ret].m_Name<<"\t";
+        cout<<"性别："<<abs->personArray[ret].m_Sex<<"\t";
+        cout<<"年龄："<<abs->personArray[ret].m_Age<<"\t";
+        cout<<"电话："<<abs->personArray[ret].m_Phone<<"\t";
+        cout<<"住址："<<abs->personArray[ret].m_Addr<<endl;
+    }else{
+        cout<<"查无此人"<<endl;
+    }
+    system("pause");
+    system("cls");
+}
+
+
 int main(){
     SetConsoleOutputCP(65001);
 
@@ -104,10 +166,13 @@ int main(){
                 addPerson(&abs); // 地址传递
                 break;
             case 2: // 显示联系人
+                showPerson(&abs);
                 break;
             case 3: // 删除联系人
+                deletePerson(&abs);
                 break;
             case 4: // 查找联系人
+                findPerson(&abs);
                 break;
             case 5: // 修改联系人
                 break;
