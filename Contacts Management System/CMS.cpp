@@ -132,7 +132,7 @@ void deletePerson(AddressBooks* abs){
 }
 
 void findPerson(AddressBooks* abs){
-    cout<<"请输入你要查找的联系人"<<endl;
+    cout<<"请输入您要查找的联系人"<<endl;
     string name;
     cin>>name;
     int ret=isExit(abs,name);
@@ -149,6 +149,83 @@ void findPerson(AddressBooks* abs){
     system("cls");
 }
 
+void modifyPerson(AddressBooks* abs){
+    cout<<"请输入您要修改的联系人"<<endl;
+    string name;
+    cin>>name;
+    int ret=isExit(abs,name);
+    if(ret!=-1){
+        string name;
+        cout<<"请输入姓名："<<endl;
+        cin>>name;
+        abs->personArray[ret].m_Name=name;
+        
+        int sex=0;
+        cout<<"请输入性别："<<endl;
+        cout<<"1--=男"<<endl;
+        cout<<"2---女"<<endl;
+        while(true){
+            cin>>sex;
+            if(sex==1 || sex==2){
+                abs->personArray[ret].m_Sex=sex;
+                break;
+            }
+            cout<<"输入有误，请重新输入"<<endl;
+        }
+
+        cout<<"请输入年龄："<<endl;
+        int age=0;
+        while(true){
+            cin>>age;
+            if(age>=1 &&age<=150){
+                abs->personArray[abs->m_Size].m_Age=age;
+                break;
+            }
+            cout<<"输入有误，请重新输入"<<endl;
+        }
+
+        cout<<"请输入联系电话："<<endl;
+        string phone;
+        while(true){
+            cin>>phone;
+            if(phone.size()==11){
+                abs->personArray[abs->m_Size].m_Phone=phone;
+                break;
+            }
+            cout<<"输入有误，请重新输入"<<endl;
+        }
+
+        cout<<"请输入家庭住址："<<endl;
+        string address;
+        cin>>address;
+        abs->personArray[abs->m_Size].m_Addr=address;
+
+        cout<<"修改成功！"<<endl;
+
+    }else{
+        cout<<"查无此人"<<endl;
+    }
+
+    system("pause"); // 请按任意键继续
+    system("cls"); //清屏操作
+}
+
+void cleanPerson(AddressBooks* abs){
+    cout<<"您是否真的要清空？"<<endl;
+    cout<<"确认清空请按----1"<<endl;
+    cout<<"取消清空请按----0"<<endl;
+    int confirm=0;
+    cin>>confirm;
+    if(confirm==1){
+        abs->m_Size=0;
+        cout<<"通讯录已清空"<<endl;
+    }else{
+        return;
+    }
+    
+    system("pause");
+    system("cls");
+}
 
 int main(){
     SetConsoleOutputCP(65001);
@@ -175,8 +252,10 @@ int main(){
                 findPerson(&abs);
                 break;
             case 5: // 修改联系人
+                modifyPerson(&abs);
                 break;
             case 6: // 清空联系人
+                cleanPerson(&abs);
                 break;
             case 0: // 退出通讯录
                 cout<<"欢迎下次使用"<<endl;
