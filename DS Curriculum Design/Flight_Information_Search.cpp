@@ -151,7 +151,7 @@ int main() {
     if(flightManager.searchFlightByNumber(searchFlightNumber)){
         cout<<"Flight "<<searchFlightNumber<<" found."<<endl;
     }else{
-        cout<<"Flight "<<searchFlightNumber<<" not found."<<ednl;;
+        cout<<"Flight "<<searchFlightNumber<<" not found."<<endl;
     }
 
     system("pause");

@@ -114,7 +114,7 @@ int isExit(AddressBooks* abs,string name){
 }
 
 void deletePerson(AddressBooks* abs){
-    cout<<"请输入您要删除的联系人"<<end;
+    cout<<"请输入您要删除的联系人"<<endl;
     string name;
     cin>>name;
     int ret=isExit(abs,name);
