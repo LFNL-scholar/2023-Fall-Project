@@ -1,16 +1,15 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
 
-// 自定义节点结构
-struct HuffmanNode {
+// 定义HuffmanNode结构
+struct HuffmanNode{
     char data;
     int weight;
     HuffmanNode* left;
     HuffmanNode* right;
 
-    HuffmanNode(char d, int w) : data(d), weight(w), left(nullptr), right(nullptr) {}
+    HuffmanNode(char d,int w):data(d),weight(w),left(NULL),right(NULL) {}
 };
 
 // 自定义最小堆
@@ -35,56 +34,69 @@ public:
     int size();
 };
 
+void swap(HuffmanNode*& a,HuffmanNode*& b){
+    HuffmanNode* temp=a;
+    a=b;
+    b=temp;
+}
+
 // 堆的插入操作
-void MinHeap::insert(HuffmanNode* node) {
+void MinHeap::insert(HuffmanNode* node){
     heap.push_back(node);
-    int index = heap.size() - 1;
-    while (index > 0 && heap[index]->weight < heap[(index - 1) / 2]->weight) {
-        swap(heap[index], heap[(index - 1) / 2]);
-        index = (index - 1) / 2;
+    int index=heap.size()-1;
+    // 通过比较新节点与其父节点的权重，维护最小堆性质
+    // 如果新节点的权重小于其父节点的权重，交换它们的位置，直到满足最小堆性质
+    while(index>0 && heap[index]->weight<heap[(index-1)/2]->weight){
+        swap(heap[index],heap[(index-1)/2]);
+        index=(index-1)/2;
     }
 }
 
 // 堆的弹出操作
-HuffmanNode* MinHeap::pop() {
-    if (heap.empty()) {
-        return nullptr;
+HuffmanNode* MinHeap::pop(){
+    // 如果堆为空，返回空指针
+    if(heap.empty()){
+        return NULL;
     }
 
-    HuffmanNode* topNode = heap[0];
-    heap[0] = heap.back();
+    // 获取堆顶节点（最小节点）
+    HuffmanNode* topNode=heap[0];
+    // 将堆尾节点移到堆顶
+    heap[0]=heap.back();
+    // 移除堆尾节点
     heap.pop_back();
+    // 通过调用堆的最小堆调整函数，维护最小堆性质
     heapify(0);
-
+    // 返回之前的堆顶节点（最小节点）
     return topNode;
 }
 
 // 堆的堆顶节点
-HuffmanNode* MinHeap::top() {
-    return heap.empty() ? nullptr : heap[0];
+HuffmanNode* MinHeap::top(){
+    return heap.empty() ? NULL : heap[0];
 }
 
 // 堆的大小
-int MinHeap::size() {
+int MinHeap::size(){
     return heap.size();
 }
 
 // 堆的最小堆调整
-void MinHeap::heapify(int i) {
-    int smallest = i;
-    int left = 2 * i + 1;
-    int right = 2 * i + 2;
+void MinHeap::heapify(int i){
+    int smallest=i;
+    int left=2*i+1;
+    int right=2*i+2;
 
-    if (left < heap.size() && heap[left]->weight < heap[smallest]->weight) {
-        smallest = left;
+    if(left<heap.size() && heap[left]->weight<heap[smallest]->weight){
+        smallest=left;
     }
 
-    if (right < heap.size() && heap[right]->weight < heap[smallest]->weight) {
-        smallest = right;
+    if(right<heap.size() && heap[right]->weight<heap[smallest]->weight){
+        smallest=right;
     }
 
-    if (smallest != i) {
-        swap(heap[i], heap[smallest]);
+    if(smallest!=i){
+        swap(heap[i],heap[smallest]);
         heapify(smallest);
     }
 }
@@ -93,13 +105,16 @@ void MinHeap::heapify(int i) {
 class HuffmanCoding {
 private:
     HuffmanNode* root;
-    vector<pair<char, string>> huffmanCodes;
+    vector<pair<char,string>> huffmanCodes;
 
     // 构建哈夫曼树
-    void buildHuffmanTree(const vector<pair<char, int>>& charFrequency);
+    void buildHuffmanTree(const vector<pair<char,int>>& charFrequency);
+
+    // 递归删除哈夫曼树节点的成员函数
+    void deleteTree(HuffmanNode* node);
 
     // 递归生成哈夫曼编码
-    void generateCodes(HuffmanNode* node, string code);
+    void generateCodes(HuffmanNode* node,string code);
 
 public:
     // 构造函数
@@ -122,106 +137,115 @@ public:
 };
 
 // 构造函数
-HuffmanCoding::HuffmanCoding() : root(nullptr) {}
+HuffmanCoding::HuffmanCoding() : root(NULL) {}
 
-// 析构函数
-HuffmanCoding::~HuffmanCoding() {
-    // 释放哈夫曼树的内存
-    // 通过后序遍历删除每个节点
-    function<void(HuffmanNode*)> deleteTree = [&](HuffmanNode* node) {
-        if (node) {
-            deleteTree(node->left);
-            deleteTree(node->right);
-            delete node;
-        }
-    };
+// 递归删除哈夫曼树节点的成员函数的实现
+void HuffmanCoding::deleteTree(HuffmanNode* node){
+    if(node){
+        deleteTree(node->left);
+        deleteTree(node->right);
+        delete node;
+    }
+}
 
+// 析构函数调用成员函数
+HuffmanCoding::~HuffmanCoding(){
     deleteTree(root);
 }
 
 // 构建哈夫曼树
-void HuffmanCoding::buildHuffmanTree(const vector<pair<char, int>>& charFrequency) {
+void HuffmanCoding::buildHuffmanTree(const vector<pair<char,int>>& charFrequency){
     // 使用最小堆存储节点，按权值升序排列
     MinHeap minHeap;
 
     // 初始化节点并加入最小堆
     for (const auto& pair : charFrequency) {
-        minHeap.insert(new HuffmanNode(pair.first, pair.second));
+        minHeap.insert(new HuffmanNode(pair.first,pair.second));
     }
 
     // 构建哈夫曼树
-    while (minHeap.size() > 1) {
-        HuffmanNode* left = minHeap.pop();
-        HuffmanNode* right = minHeap.pop();
+    while(minHeap.size()>1){
+        HuffmanNode* left=minHeap.pop();
+        HuffmanNode* right=minHeap.pop();
 
-        HuffmanNode* internalNode = new HuffmanNode('\0', left->weight + right->weight);
-        internalNode->left = left;
-        internalNode->right = right;
+        HuffmanNode* internalNode=new HuffmanNode('\0',left->weight+right->weight);
+        internalNode->left=left;
+        internalNode->right=right;
 
         minHeap.insert(internalNode);
     }
 
     // 根节点即为哈夫曼树的根
-    root = minHeap.top();
+    root=minHeap.top();
 }
 
 // 递归生成哈夫曼编码
-void HuffmanCoding::generateCodes(HuffmanNode* node, string code) {
-    if (node->data != '\0') {
-        huffmanCodes.push_back({node->data, code});
+void HuffmanCoding::generateCodes(HuffmanNode* node,string code){
+    if(node->data!='\0'){
+        huffmanCodes.push_back({node->data,code});
     }
-
-    if (node->left) {
-        generateCodes(node->left, code + '0');
+    if(node->left){
+        generateCodes(node->left,code+'0');
     }
-
-    if (node->right) {
-        generateCodes(node->right, code + '1');
+    if(node->right){
+        generateCodes(node->right, code +'1');
     }
 }
 
 // 设置字符集和权值，构建哈夫曼树
-void HuffmanCoding::setCharacterFrequency(const vector<pair<char, int>>& charFrequency) {
+void HuffmanCoding::setCharacterFrequency(const vector<pair<char,int>>& charFrequency){
     buildHuffmanTree(charFrequency);
     generateCodes(root, "");
 }
 
 // 打印哈夫曼编码
 void HuffmanCoding::printHuffmanCodes() {
-    cout << "Huffman Codes:" << endl;
-    for (const auto& pair : huffmanCodes) {
-        cout << pair.first << ": " << pair.second << endl;
+    cout<<"Huffman Codes:"<<endl;
+    for(const auto& pair : huffmanCodes){
+        cout<<pair.first<<": "<<pair.second<<endl;
     }
 }
 
 // 编码
-string HuffmanCoding::encode(const string& input) {
-    string encodedString = "";
-    for (char c : input) {
-        for (const auto& codePair : huffmanCodes) {
-            if (codePair.first == c) {
-                encodedString += codePair.second;
+string HuffmanCoding::encode(const string& input){
+    // 用于存储编码后的字符串
+    string encodedString="";
+    // 遍历输入字符串的每个字符
+    for(char c : input){
+        // 遍历哈夫曼编码列表
+        for(const auto& codePair : huffmanCodes){
+            // 如果找到字符对应的哈夫曼编码
+            if(codePair.first==c) {
+                // 将该字符的哈夫曼编码追加到编码后的字符串中
+                encodedString+=codePair.second;
+                // 跳出内层循环，继续处理下一个输入字符
                 break;
             }
         }
     }
+    // 返回编码后的字符串
     return encodedString;
 }
 
 // 译码
-string HuffmanCoding::decode(const string& input) {
-    string decodedString = "";
-    HuffmanNode* current = root;
-    for (char bit : input) {
-        if (bit == '0') {
-            current = current->left;
-        } else {
-            current = current->right;
+string HuffmanCoding::decode(const string& input){
+    string decodedString="";
+    // 当前节点初始化为哈夫曼树的根节点
+    HuffmanNode* current=root;
+    // 遍历输入的哈夫曼编码字符串
+    for(char bit : input){
+        // 根据当前 bit 的值，移动到左子节点或右子节点
+        if(bit=='0'){
+            current=current->left;
+        }else{
+            current=current->right;
         }
 
-        if (current->data != '\0') {
-            decodedString += current->data;
-            current = root;
+        // 如果当前节点是叶子节点（包含字符信息）
+        if(current->data!='\0'){
+            // 将叶子节点的字符追加到译码后的字符串中
+            decodedString+=current->data;
+            current=root;
         }
     }
     return decodedString;
