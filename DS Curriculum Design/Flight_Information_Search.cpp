@@ -3,6 +3,7 @@
 #include<string>
 #include<fstream>
 #include<sstream>
+#include<Windows.h>
 using namespace std;
 
 class Flight{
@@ -73,17 +74,21 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
 }
 
 void displayAllFlights(const vector<Flight>& flights){
+    cout<<"-------------------------------------------------------------------------------------------"<<endl;
     for(const auto& flight : flights){
         cout<<flight.flightNumber<<" "<<flight.departure<<" to "<<flight.destination
             <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
             <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<<"¥"<<endl;
     }
+    cout<<"-------------------------------------------------------------------------------------------"<<endl;
 }
 
 void displayFlight(const Flight& flight){
+    cout<<"-------------------------------------------------------------------------------------------"<<endl;
     cout<<flight.flightNumber<<" "<< flight.departure <<" to "<<flight.destination
         <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
         <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<< "¥" <<endl;
+    cout<<"-------------------------------------------------------------------------------------------"<<endl;
 }
 
 class FlightManager {
@@ -102,7 +107,7 @@ public:
         for(int i=0;i<n-1;i++){
             for(int j=0;j<n-i-1;j++){
                 if(flights[j].flightNumber>flights[j+1].flightNumber){
-                    Flight temp flights[j];
+                    Flight temp=flights[j];
                     flights[j]=flights[j+1];
                     flights[j+1]=temp;
                 }
@@ -125,7 +130,7 @@ public:
             int mid=low+(high-low)/2;
 
             if(flights[mid].flightNumber==flightNumber){
-                cout< "Flight found:"<<endl;
+                cout<<"Flight found:"<<endl;
                 displayFlight(flights[mid]);
                 return;
             }else if(flights[mid].flightNumber<flightNumber){
@@ -236,6 +241,7 @@ public:
 };
 
 int main() {
+    SetConsoleOutputCP(65001);
     FlightManager flightManager;
     flightManager.readFlightsFromFile("FIS_Info.txt");
     flightManager.sortFlightsByNumber();
