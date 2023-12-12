@@ -18,52 +18,51 @@ public:
     Flight(string number,string depart,string dest,string departTime,string arriveTime,string aircraft,double price)
         : flightNumber(number),departure(depart),destination(dest),departureTime(departTime),arrivalTime(arriveTime),aircraftType(aircraft),ticketPrice(price) {}
 
-    bool compareByNumber(const Flight& other)const{
-        return flightNumber < other.flightNumber;
+    bool compareByNumber(const Flight& other) const{
+        return flightNumber<other.flightNumber;
     }
 
-    bool compareByDeparture(const string& otherDeparture) const {
-        return departure == otherDeparture;
+    bool compareByDeparture(const string& otherDeparture) const{
+        return departure==otherDeparture;
     }
 
-    bool compareByDestination(const string& otherDestination) const {
-        return destination == otherDestination;
+    bool compareByDestination(const string& otherDestination) const{
+        return destination==otherDestination;
     }
 
-    bool compareByDepartureTime(const string& otherDepartureTime) const {
-        return departureTime == otherDepartureTime;
+    bool compareByDepartureTime(const string& otherDepartureTime) const{
+        return departureTime==otherDepartureTime;
     }
 
-    bool compareByArrivalTime(const string& otherArrivalTime) const {
-        return arrivalTime == otherArrivalTime;
+    bool compareByArrivalTime(const string& otherArrivalTime) const{
+        return arrivalTime==otherArrivalTime;
     }
 
-    bool compareByAircraftType(const string& otherAircraftType) const {
-        return aircraftType == otherAircraftType;
+    bool compareByAircraftType(const string& otherAircraftType) const{
+        return aircraftType==otherAircraftType;
     }
 
-    bool compareByTicketPrice(double otherTicketPrice) const {
-        return ticketPrice == otherTicketPrice;
+    bool compareByTicketPrice(double otherTicketPrice) const{
+        return ticketPrice==otherTicketPrice;
     }
 
 };
 
-// 全局函数，负责读取航班信息并填充 flights 向量
 void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     ifstream inputFile(filename);
-    if (!inputFile.is_open()) {
-        cerr << "Error opening file for reading." << endl;
+    if (!inputFile.is_open()){
+        cerr<<"Error opening file for reading."<<endl;
         return;
     }
 
     string line;
-    while (getline(inputFile, line)) {
+    while(getline(inputFile, line)){
         istringstream iss(line);
-        string number, depart, dest, departTime, arriveTime, aircraft;
+        string number,depart,dest,departTime,arriveTime,aircraft;
         double price;
 
-        if (!(iss >> number >> depart >> dest >> departTime >> arriveTime >> aircraft >> price)) {
-            cerr << "Error parsing line in file." << endl;
+        if(!(iss>>number>>depart>>dest>>departTime>>arriveTime>>aircraft>>price)){
+            cerr<<"Error parsing line in file."<<endl;
             continue;
         }
 
@@ -73,22 +72,19 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     inputFile.close();
 }
 
-// 全局函数，用于显示全部航班信息
-void displayAllFlights(const vector<Flight>& flights) {
-    for (const auto& flight : flights) {
-        cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
-             << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
-             << " Aircraft: " << flight.aircraftType << " Price: " << flight.ticketPrice << "¥" << "\n";
+void displayAllFlights(const vector<Flight>& flights){
+    for(const auto& flight : flights){
+        cout<<flight.flightNumber<<" "<<flight.departure<<" to "<<flight.destination
+            <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
+            <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<<"¥"<<endl;
     }
 }
 
-// 显示航班信息
-void displayFlight(const Flight& flight) {
-    cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
-         << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
-         << " Aircraft: " << flight.aircraftType << " Price: " << flight.ticketPrice << "¥" << "\n";
+void displayFlight(const Flight& flight){
+    cout<<flight.flightNumber<<" "<< flight.departure <<" to "<<flight.destination
+        <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
+        <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<< "¥" <<endl;
 }
-
 
 class FlightManager {
 private:
@@ -96,68 +92,64 @@ private:
 
 public:
     // 调用全局函数读取航班信息
-    void readFlightsFromFile(const string& filename) {
+    void readFlightsFromFile(const string& filename){
         ::readFlightsFromFile(flights, filename);
     }
 
     // 冒泡排序算法
-    void sortFlightsByNumber() {
-        int n = flights.size();
-        for (int i = 0; i < n - 1; ++i) {
-            for (int j = 0; j < n - i - 1; ++j) {
-                if (flights[j].flightNumber > flights[j + 1].flightNumber) {
-                    // 交换 flights[j] 和 flights[j + 1]
-                    Flight temp = flights[j];
-                    flights[j] = flights[j + 1];
-                    flights[j + 1] = temp;
+    void sortFlightsByNumber(){
+        int n=flights.size();
+        for(int i=0;i<n-1;i++){
+            for(int j=0;j<n-i-1;j++){
+                if(flights[j].flightNumber>flights[j+1].flightNumber){
+                    Flight temp flights[j];
+                    flights[j]=flights[j+1];
+                    flights[j+1]=temp;
                 }
             }
         }
     }
 
     // 显示全部航班信息
-    void displayAllFlights() {
+    void displayAllFlights(){
         ::displayAllFlights(flights);
     }
+    
+    void searchFlightByNumber(const string& flightNumber){
+        //sortFlightsByNumber();
 
-    // Simple binary search for a flight by its number
-    void searchFlightByNumber(const string& flightNumber) {
-        // Sort flights by number (required for binary search)
-        sortFlightsByNumber();
+        int low=0;
+        int high=flights.size()-1;
 
-        int low = 0;
-        int high = flights.size() - 1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
 
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            if (flights[mid].flightNumber == flightNumber) {
-                cout << "Flight found:\n";
+            if(flights[mid].flightNumber==flightNumber){
+                cout< "Flight found:"<<endl;
                 displayFlight(flights[mid]);
                 return;
-            } else if (flights[mid].flightNumber < flightNumber) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
+            }else if(flights[mid].flightNumber<flightNumber){
+                low=mid+1;
+            }else{
+                high=mid-1;
             }
         }
 
-        cout << "Flight not found.\n";
+        cout << "Flight not found."<<endl;
     }
 
-    // Simple linear search for flights by other data elements
     void searchFlightsByDeparture(const string& departureCity) {
-        cout << "Flights departing from " << departureCity << ":\n";
-        bool found = false;
-        for (const auto& flight : flights) {
-            if (flight.departure == departureCity) {
+        cout <<"Flights departing from "<<departureCity<<":"<<endl;
+        bool found=false;
+        for(const auto& flight : flights){
+            if(flight.departure==departureCity) {
                 displayFlight(flight);
-                found = true;
+                found=true;
             }
         }
 
-        if (!found) {
-            cout << "No flights found.\n";
+        if(!found){
+            cout<<"No flights found."<<endl;
         }
     }
 
@@ -241,11 +233,7 @@ public:
         }
     }
 
-
-
-
 };
-
 
 int main() {
     FlightManager flightManager;
