@@ -48,6 +48,24 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     inputFile.close();
 }
 
+// 全局函数，用于显示全部航班信息
+void displayAllFlights(const vector<Flight>& flights) {
+    for (const auto& flight : flights) {
+        cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
+             << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
+             << " Aircraft: " << flight.aircraftType << " Price: " << flight.ticketPrice << "¥" << "\n";
+    }
+}
+
+// 显示航班信息
+void displayFlight(const Flight& flight) {
+    cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
+         << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
+         << " Aircraft: " << flight.aircraftType << " Price: " << flight.ticketPrice << "¥" << "\n";
+}
+
+
+
 class FlightManager {
 private:
     vector<Flight> flights;
@@ -57,14 +75,40 @@ public:
     void readFlightsFromFile(const string& filename) {
         ::readFlightsFromFile(flights, filename);
     }
+
+    // 冒泡排序算法
+    void sortFlightsByNumber() {
+        int n = flights.size();
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = 0; j < n - i - 1; ++j) {
+                if (flights[j].flightNumber > flights[j + 1].flightNumber) {
+                    // 交换 flights[j] 和 flights[j + 1]
+                    Flight temp = flights[j];
+                    flights[j] = flights[j + 1];
+                    flights[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // 显示全部航班信息
+    void displayAllFlights() {
+        ::displayAllFlights(flights);
+    }
+
+
 };
 
 
 int main() {
     FlightManager flightManager;
-    flightManager.readFlightsFromFile("flights.txt");
+    flightManager.readFlightsFromFile("FIS_Info.txt");
+    flightManager.sortFlightsByNumber();
 
-    // 其他逻辑...
+    cout << "All Flights:"<<endl;
+    flightManager.displayAllFlights();
 
+
+    system("pause");
     return 0;
 }
