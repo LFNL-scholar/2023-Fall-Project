@@ -257,11 +257,11 @@ int main() {
     cin >> n;
 
     vector<pair<char, int>> charFrequency;
-    for (int i = 0; i < n; ++i) {
+    for (int i=0;i<n;i++){
         char character;
         int weight;
-        cout << "Enter character and weight for element " << i + 1 << ": ";
-        cin >> character >> weight;
+        cout<<"Enter character and weight for element "<<i+1<<": ";
+        cin>>character>>weight;
         charFrequency.emplace_back(character, weight);
     }
 
@@ -270,14 +270,14 @@ int main() {
     huffman.printHuffmanCodes();
 
     string input;
-    cout << "Enter the string to be encoded: ";
-    cin >> input;
+    cout<<"Enter the string to be encoded: ";
+    cin>>input;
 
-    string encoded = huffman.encode(input);
-    cout << "Encoded string: " << encoded << endl;
+    string encoded=huffman.encode(input);
+    cout<<"Encoded string: "<<encoded<<endl;
 
-    string decoded = huffman.decode(encoded);
-    cout << "Decoded string: " << decoded << endl;
+    string decoded=huffman.decode(encoded);
+    cout<<"Decoded string: "<<decoded<<endl;
 
     return 0;
 }
