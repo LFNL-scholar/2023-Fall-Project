@@ -1,3 +1,4 @@
+// vector存放自定义数据类型
 #include<iostream>
 #include<vector>
 #include<algorithm>
