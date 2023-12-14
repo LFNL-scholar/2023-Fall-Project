@@ -279,5 +279,6 @@ int main() {
     string decoded = huffman.decode(encoded);
     cout << "Decoded string: " << decoded << endl;
 
+    system("pause");
     return 0;
 }
