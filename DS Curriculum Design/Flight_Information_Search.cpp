@@ -95,24 +95,54 @@ class FlightManager {
 private:
     vector<Flight> flights;
 
+    void quicksort(vector<Flight>& flights, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(flights, low, high);
+
+            quicksort(flights, low, pivotIndex - 1);
+            quicksort(flights, pivotIndex + 1, high);
+        }
+    }
+
+    int partition(vector<Flight>& flights, int low, int high) {
+        Flight pivot = flights[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (flights[j].flightNumber <= pivot.flightNumber) {
+                i++;
+                swap(flights[i], flights[j]);
+            }
+        }
+
+        swap(flights[i + 1], flights[high]);
+
+        return i + 1;
+    }
+
 public:
     // 调用全局函数读取航班信息
     void readFlightsFromFile(const string& filename){
         ::readFlightsFromFile(flights, filename);
     }
 
-    // 冒泡排序算法
-    void sortFlightsByNumber(){
-        int n=flights.size();
-        for(int i=0;i<n-1;i++){
-            for(int j=0;j<n-i-1;j++){
-                if(flights[j].flightNumber>flights[j+1].flightNumber){
-                    Flight temp=flights[j];
-                    flights[j]=flights[j+1];
-                    flights[j+1]=temp;
-                }
-            }
-        }
+    // // 冒泡排序算法
+    // void sortFlightsByNumber(){
+    //     int n=flights.size();
+    //     for(int i=0;i<n-1;i++){
+    //         for(int j=0;j<n-i-1;j++){
+    //             if(flights[j].flightNumber>flights[j+1].flightNumber){
+    //                 Flight temp=flights[j];
+    //                 flights[j]=flights[j+1];
+    //                 flights[j+1]=temp;
+    //             }
+    //         }
+    //     }
+    // }
+
+    void sortFlightsByNumber() {
+        int n = flights.size();
+        quicksort(flights, 0, n - 1);
     }
 
     // 显示全部航班信息
