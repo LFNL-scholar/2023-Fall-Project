@@ -289,27 +289,37 @@ public:
     }
 
     // Combined search for flights
-    void searchFlightsCombined(const string& departureCity, const string& destination, const string& departureTime,
-                                const string& arrivalTime, const string& aircraftType, double ticketPrice) {
-    cout << "Combined Search Results:\n";
-    bool found = false;
+    void searchFlightsCombined(const string& departureCity, const string& destination,
+                           const string& departureTime, const string& arrivalTime,
+                           const string& aircraftType, double minPrice, double maxPrice) {
+        // 遍历 flights 向量，输出符合条件的航班信息
+        // 在这里进行价格区间查询
 
-    for (const auto& flight : flights) {
-        if ((departureCity.empty() || flight.compareByDeparture(departureCity)) &&
-            (destination.empty() || flight.compareByDestination(destination)) &&
-            (departureTime.empty() || flight.compareByDepartureTime(departureTime)) &&
-            (arrivalTime.empty() || flight.compareByArrivalTime(arrivalTime)) &&
-            (aircraftType.empty() || flight.compareByAircraftType(aircraftType)) &&
-            (ticketPrice == 0 || flight.compareByTicketPrice(ticketPrice))) {
-            displayFlight(flight);
-            found = true;
+        setConsoleColor(GREEN);  // 设置为绿色
+        cout << "Flights matching the criteria:" << endl;
+        resetConsoleColor();  // 恢复默认颜色
+
+        bool found = false;
+
+        for (const auto& flight : flights) {
+            if ((departureCity.empty() || flight.compareByDeparture(departureCity)) &&
+                (destination.empty() || flight.compareByDestination(destination)) &&
+                (departureTime.empty() || flight.compareByDepartureTime(departureTime)) &&
+                (arrivalTime.empty() || flight.compareByArrivalTime(arrivalTime)) &&
+                (aircraftType.empty() || flight.compareByAircraftType(aircraftType)) &&
+                (minPrice == 0 || (flight.ticketPrice >= minPrice && flight.ticketPrice <= maxPrice))) {
+                displayFlight(flight);
+                found = true;
+            }
         }
-    }
 
         if (!found) {
-            cout << "No flights found.\n";
+            setConsoleColor(GREEN);  // 设置为绿色
+            cout << "No flights found matching the criteria.\n";
+            resetConsoleColor();  // 恢复默认颜色
         }
     }
+
 
     void searchFlightsByPriceRange(double minPrice, double maxPrice) {
         cout << "Flights within price range " << minPrice << " - " << maxPrice << ":\n";
@@ -362,10 +372,7 @@ int main() {
             flightManager.displayAllFlights();
         } else if(userChoice=="cls"){
             system("cls");
-        }else if (userChoice == "9") {
-            cout << "Exiting program.\n";
-            return 0;
-        } else {
+        }else {
             int choice = stoi(userChoice);
             switch (choice) {
                 case 1: {
@@ -427,7 +434,7 @@ int main() {
             }
             case 8: {
                 string departureCity, destination, departureTime, arrivalTime, aircraftType;
-                double ticketPrice;
+                double minPrice, maxPrice;
 
                 cout << "Enter departure city (or leave empty): ";
                 cin.ignore(); // Ignore any newline characters in the input buffer
@@ -445,25 +452,31 @@ int main() {
                 cout << "Enter aircraft type (or leave empty): ";
                 getline(cin, aircraftType);
 
-                cout << "Enter ticket price (or enter 0 for any price): ";
-                cin >> ticketPrice;
+                cout << "Enter minimum ticket price (or enter 0 for any price): ";
+                cin >> minPrice;
 
-                flightManager.searchFlightsCombined(departureCity, destination, departureTime, arrivalTime, aircraftType, ticketPrice);
+                cout << "Enter maximum ticket price (or enter 0 for any price): ";
+                cin >> maxPrice;
+
+                flightManager.searchFlightsCombined(departureCity, destination, departureTime, arrivalTime, aircraftType, minPrice, maxPrice);
                 break;
             }
-            
-            case 9:
+            case 9:{
+                setConsoleColor(GREEN);
                 cout << "Exiting program.\n";
-                cout << "Thank you for using LFNL TECH Flight Query System. Have a great day!\n";
+                cout << "Thank you for using LFNL TECH Flight Searching System. Have a great day!\n";
+                resetConsoleColor();
                 system("pause");
                 return 0;
+            }
             default:
                 cout << "Invalid choice. Try again.\n";
+            
             }
+        
         }
-    }
     
-
+    }
     system("pause");
     return 0;
 }
