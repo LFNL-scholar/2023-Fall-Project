@@ -75,23 +75,55 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     inputFile.close();
 }
 
+enum ConsoleColor {
+    DEFAULT = 7,
+    RED = 12,
+    GREEN = 10,
+    YELLOW = 14,
+    BLUE = 9,
+    MAGENTA = 13,
+    CYAN = 11,
+    WHITE = 15
+};
+
+// 设置文本颜色
+void setConsoleColor(ConsoleColor color) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, color);
+}
+
+// 恢复默认文本颜色
+void resetConsoleColor() {
+    setConsoleColor(DEFAULT);
+}
+
 void displayAllFlights(const vector<Flight>& flights){
+    setConsoleColor(GREEN);
     cout<<"--------------------------------------------------------------------------------------------------"<<endl;
+    resetConsoleColor();
     for(const auto& flight : flights){
         cout<<flight.flightNumber<<" "<<flight.departure<<" to "<<flight.destination
             <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
             <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<<"¥"<<endl;
     }
+    setConsoleColor(GREEN);
     cout<<"--------------------------------------------------------------------------------------------------"<<endl;
+    resetConsoleColor();
 }
 
-void displayFlight(const Flight& flight){
-    cout<<"--------------------------------------------------------------------------------------------------"<<endl;
-    cout<<flight.flightNumber<<" "<< flight.departure <<" to "<<flight.destination
-        <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
-        <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<< "¥" <<endl;
-    cout<<"--------------------------------------------------------------------------------------------------"<<endl;
+
+
+void displayFlight(const Flight& flight) {
+    cout << "--------------------------------------------------------------------------------------------------" << endl;
+    setConsoleColor(GREEN);  // 设置为绿色
+    cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
+         << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
+         << " Aircraft: " << flight.aircraftType << " Price: " << flight.ticketPrice << "¥" << endl;
+    resetConsoleColor();  // 恢复默认颜色
+    cout << "--------------------------------------------------------------------------------------------------" << endl;
+
 }
+
 
 class FlightManager {
 private:
@@ -258,7 +290,7 @@ public:
 
     // Combined search for flights
     void searchFlightsCombined(const string& departureCity, const string& destination, const string& departureTime,
-                            const string& arrivalTime, const string& aircraftType, double ticketPrice) {
+                                const string& arrivalTime, const string& aircraftType, double ticketPrice) {
     cout << "Combined Search Results:\n";
     bool found = false;
 
@@ -303,8 +335,12 @@ int main() {
     flightManager.readFlightsFromFile("FIS_Info.txt");
     flightManager.sortFlightsByNumber();
 
-   // cout << "All Flights:"<<endl;
-    //flightManager.displayAllFlights();
+    setConsoleColor(GREEN);
+    cout<<"-------------------------------------------------------"<<endl;
+    cout<<"-  Welcome to the LFNL TECH Flight Searching System!  -"<<endl;
+    cout<<"-------------------------------------------------------"<<endl;
+    resetConsoleColor();
+
 
     while (true) {
         cout << "Choose search type:\n";
@@ -316,8 +352,7 @@ int main() {
         cout << "6. Search by aircraft type\n";
         cout << "7. Search by price range\n";
         cout << "8. Combined Search\n";
-        cout << "9. display. Display all flights\n";
-        cout << "10. Exit\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
 
         string userChoice;
@@ -325,7 +360,9 @@ int main() {
 
         if (userChoice == "display") {
             flightManager.displayAllFlights();
-        } else if (userChoice == "9") {
+        } else if(userChoice=="cls"){
+            system("cls");
+        }else if (userChoice == "9") {
             cout << "Exiting program.\n";
             return 0;
         } else {
@@ -414,13 +451,11 @@ int main() {
                 flightManager.searchFlightsCombined(departureCity, destination, departureTime, arrivalTime, aircraftType, ticketPrice);
                 break;
             }
-            case 9:{
-                if (userChoice == "display") {
-                    flightManager.displayAllFlights();
-                }
-            }
-            case 10:
+            
+            case 9:
                 cout << "Exiting program.\n";
+                cout << "Thank you for using LFNL TECH Flight Query System. Have a great day!\n";
+                system("pause");
                 return 0;
             default:
                 cout << "Invalid choice. Try again.\n";
