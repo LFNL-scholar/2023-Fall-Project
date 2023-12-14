@@ -171,7 +171,6 @@ public:
     }
     
     void searchFlightByNumber(const string& flightNumber){
-        //sortFlightsByNumber();
 
         int low=0;
         int high=flights.size()-1;
@@ -197,7 +196,7 @@ public:
         cout <<"Flights departing from "<<departureCity<<":"<<endl;
         bool found=false;
         for(const auto& flight : flights){
-            if(flight.departure==departureCity) {
+            if(flight.compareByDeparture(departureCity)) {
                 displayFlight(flight);
                 found=true;
             }
@@ -289,11 +288,8 @@ public:
     }
 
     // Combined search for flights
-    void searchFlightsCombined(const string& departureCity, const string& destination,
-                           const string& departureTime, const string& arrivalTime,
-                           const string& aircraftType, double minPrice, double maxPrice) {
-        // 遍历 flights 向量，输出符合条件的航班信息
-        // 在这里进行价格区间查询
+    void searchFlightsCombined(const string& departureCity, const string& destination,const string& departureTime, const string& arrivalTime,
+                                const string& aircraftType, double minPrice, double maxPrice) {
 
         setConsoleColor(GREEN);  // 设置为绿色
         cout << "Flights matching the criteria:" << endl;
