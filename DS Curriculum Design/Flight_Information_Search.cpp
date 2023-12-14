@@ -57,13 +57,15 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     }
 
     string line;
+    int lineNumber = 0; 
     while(getline(inputFile, line)){
+         lineNumber++;
         istringstream iss(line);
         string number,depart,dest,departTime,arriveTime,aircraft;
         double price;
 
         if(!(iss>>number>>depart>>dest>>departTime>>arriveTime>>aircraft>>price)){
-            cerr<<"Error parsing line in file."<<endl;
+            cerr<<"Error parsing line in file."<< lineNumber << "." << endl;
             continue;
         }
 
@@ -74,21 +76,21 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
 }
 
 void displayAllFlights(const vector<Flight>& flights){
-    cout<<"-------------------------------------------------------------------------------------------"<<endl;
+    cout<<"--------------------------------------------------------------------------------------------------"<<endl;
     for(const auto& flight : flights){
         cout<<flight.flightNumber<<" "<<flight.departure<<" to "<<flight.destination
             <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
             <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<<"¥"<<endl;
     }
-    cout<<"-------------------------------------------------------------------------------------------"<<endl;
+    cout<<"--------------------------------------------------------------------------------------------------"<<endl;
 }
 
 void displayFlight(const Flight& flight){
-    cout<<"-------------------------------------------------------------------------------------------"<<endl;
+    cout<<"--------------------------------------------------------------------------------------------------"<<endl;
     cout<<flight.flightNumber<<" "<< flight.departure <<" to "<<flight.destination
         <<" Departure: "<<flight.departureTime<<" Arrival: "<<flight.arrivalTime
         <<" Aircraft: "<<flight.aircraftType<<" Price: "<<flight.ticketPrice<< "¥" <<endl;
-    cout<<"-------------------------------------------------------------------------------------------"<<endl;
+    cout<<"--------------------------------------------------------------------------------------------------"<<endl;
 }
 
 class FlightManager {
@@ -125,20 +127,6 @@ public:
     void readFlightsFromFile(const string& filename){
         ::readFlightsFromFile(flights, filename);
     }
-
-    // // 冒泡排序算法
-    // void sortFlightsByNumber(){
-    //     int n=flights.size();
-    //     for(int i=0;i<n-1;i++){
-    //         for(int j=0;j<n-i-1;j++){
-    //             if(flights[j].flightNumber>flights[j+1].flightNumber){
-    //                 Flight temp=flights[j];
-    //                 flights[j]=flights[j+1];
-    //                 flights[j+1]=temp;
-    //             }
-    //         }
-    //     }
-    // }
 
     void sortFlightsByNumber() {
         int n = flights.size();
@@ -268,6 +256,45 @@ public:
         }
     }
 
+    // Combined search for flights
+    void searchFlightsCombined(const string& departureCity, const string& destination, const string& departureTime,
+                            const string& arrivalTime, const string& aircraftType, double ticketPrice) {
+    cout << "Combined Search Results:\n";
+    bool found = false;
+
+    for (const auto& flight : flights) {
+        if ((departureCity.empty() || flight.compareByDeparture(departureCity)) &&
+            (destination.empty() || flight.compareByDestination(destination)) &&
+            (departureTime.empty() || flight.compareByDepartureTime(departureTime)) &&
+            (arrivalTime.empty() || flight.compareByArrivalTime(arrivalTime)) &&
+            (aircraftType.empty() || flight.compareByAircraftType(aircraftType)) &&
+            (ticketPrice == 0 || flight.compareByTicketPrice(ticketPrice))) {
+            displayFlight(flight);
+            found = true;
+        }
+    }
+
+        if (!found) {
+            cout << "No flights found.\n";
+        }
+    }
+
+    void searchFlightsByPriceRange(double minPrice, double maxPrice) {
+        cout << "Flights within price range " << minPrice << " - " << maxPrice << ":\n";
+        bool found = false;
+
+        for (const auto& flight : flights) {
+            if (flight.ticketPrice >= minPrice && flight.ticketPrice <= maxPrice) {
+                displayFlight(flight);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            cout << "No flights found within the specified price range.\n";
+        }
+    }
+
 };
 
 int main() {
@@ -276,8 +303,8 @@ int main() {
     flightManager.readFlightsFromFile("FIS_Info.txt");
     flightManager.sortFlightsByNumber();
 
-    cout << "All Flights:"<<endl;
-    flightManager.displayAllFlights();
+   // cout << "All Flights:"<<endl;
+    //flightManager.displayAllFlights();
 
     while (true) {
         cout << "Choose search type:\n";
@@ -287,15 +314,24 @@ int main() {
         cout << "4. Search by departure time\n";
         cout << "5. Search by arrival time\n";
         cout << "6. Search by aircraft type\n";
-        cout << "7. Search by ticket price\n";
-        cout << "8. Exit\n";
+        cout << "7. Search by price range\n";
+        cout << "8. Combined Search\n";
+        cout << "9. display. Display all flights\n";
+        cout << "10. Exit\n";
         cout << "Enter your choice: ";
 
-        int choice;
-        cin >> choice;
+        string userChoice;
+        cin >> userChoice;
 
-        switch (choice) {
-            case 1: {
+        if (userChoice == "display") {
+            flightManager.displayAllFlights();
+        } else if (userChoice == "9") {
+            cout << "Exiting program.\n";
+            return 0;
+        } else {
+            int choice = stoi(userChoice);
+            switch (choice) {
+                case 1: {
                 string flightNumber;
                 cout << "Enter flight number to search: ";
                 cin >> flightNumber;
@@ -338,19 +374,60 @@ int main() {
                 break;
             }
             case 7: {
-                double ticketPrice;
-                cout << "Enter ticket price to search: ";
-                cin >> ticketPrice;
-                flightManager.searchFlightsByTicketPrice(ticketPrice);
+                double minPrice, maxPrice;
+                cout << "Enter minimum ticket price: ";
+                cin >> minPrice;
+
+                cout << "Enter maximum ticket price: ";
+                cin >> maxPrice;
+
+                if (minPrice > maxPrice) {
+                    cout << "Invalid price range. Minimum price should be less than or equal to maximum price.\n";
+                } else {
+                    flightManager.searchFlightsByPriceRange(minPrice, maxPrice);
+                }
                 break;
             }
-            case 8:
+            case 8: {
+                string departureCity, destination, departureTime, arrivalTime, aircraftType;
+                double ticketPrice;
+
+                cout << "Enter departure city (or leave empty): ";
+                cin.ignore(); // Ignore any newline characters in the input buffer
+                getline(cin, departureCity);
+
+                cout << "Enter destination (or leave empty): ";
+                getline(cin, destination);
+
+                cout << "Enter departure time (or leave empty): ";
+                getline(cin, departureTime);
+
+                cout << "Enter arrival time (or leave empty): ";
+                getline(cin, arrivalTime);
+
+                cout << "Enter aircraft type (or leave empty): ";
+                getline(cin, aircraftType);
+
+                cout << "Enter ticket price (or enter 0 for any price): ";
+                cin >> ticketPrice;
+
+                flightManager.searchFlightsCombined(departureCity, destination, departureTime, arrivalTime, aircraftType, ticketPrice);
+                break;
+            }
+            case 9:{
+                if (userChoice == "display") {
+                    flightManager.displayAllFlights();
+                }
+            }
+            case 10:
                 cout << "Exiting program.\n";
                 return 0;
             default:
                 cout << "Invalid choice. Try again.\n";
+            }
         }
     }
+    
 
     system("pause");
     return 0;
