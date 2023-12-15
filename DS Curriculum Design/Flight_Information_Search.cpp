@@ -19,8 +19,14 @@ public:
     Flight(string number,string depart,string dest,string departTime,string arriveTime,string aircraft,double price)
         : flightNumber(number),departure(depart),destination(dest),departureTime(departTime),arrivalTime(arriveTime),aircraftType(aircraft),ticketPrice(price) {}
 
-    bool compareByNumber(const Flight& other) const{
-        return flightNumber<other.flightNumber;
+    // bool compareByNumber(const Flight& other) const{
+    //     return flightNumber<other.flightNumber;
+    // }
+
+    void swap(Flight& a, Flight& b) {
+        Flight temp = a;
+        a = b;
+        b = temp;
     }
 
     bool compareByDeparture(const string& otherDeparture) const{
@@ -59,7 +65,7 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     string line;
     int lineNumber = 0; 
     while(getline(inputFile, line)){
-         lineNumber++;
+        lineNumber++;
         istringstream iss(line);
         string number,depart,dest,departTime,arriveTime,aircraft;
         double price;
@@ -75,6 +81,7 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
     inputFile.close();
 }
 
+//输出区块
 enum ConsoleColor {
     DEFAULT = 7,
     RED = 12,
@@ -86,13 +93,11 @@ enum ConsoleColor {
     WHITE = 15
 };
 
-// 设置文本颜色
 void setConsoleColor(ConsoleColor color) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
 }
 
-// 恢复默认文本颜色
 void resetConsoleColor() {
     setConsoleColor(DEFAULT);
 }
@@ -111,37 +116,40 @@ void displayAllFlights(const vector<Flight>& flights){
     resetConsoleColor();
 }
 
-
-
 void displayFlight(const Flight& flight) {
     cout << "--------------------------------------------------------------------------------------------------" << endl;
-    setConsoleColor(GREEN);  // 设置为绿色
+    setConsoleColor(GREEN);
     cout << flight.flightNumber << " " << flight.departure << " to " << flight.destination
          << " Departure: " << flight.departureTime << " Arrival: " << flight.arrivalTime
          << " Aircraft: " << flight.aircraftType << " Price: " << flight.ticketPrice << "¥" << endl;
-    resetConsoleColor();  // 恢复默认颜色
+    resetConsoleColor();
     cout << "--------------------------------------------------------------------------------------------------" << endl;
 
 }
-
+//-----
 
 class FlightManager {
 private:
     vector<Flight> flights;
 
     void quicksort(vector<Flight>& flights, int low, int high) {
+        // 如果待排序的范围有效（至少包含两个元素）
         if (low < high) {
+            // 找到分区点（pivot）的索引
             int pivotIndex = partition(flights, low, high);
 
+            // 对分区点左右两侧的子数组进行递归排序
             quicksort(flights, low, pivotIndex - 1);
             quicksort(flights, pivotIndex + 1, high);
         }
     }
 
+    // 分区函数，用于确定分区点的位置
     int partition(vector<Flight>& flights, int low, int high) {
         Flight pivot = flights[high];
         int i = low - 1;
 
+        // 遍历当前范围内的元素
         for (int j = low; j < high; j++) {
             if (flights[j].flightNumber <= pivot.flightNumber) {
                 i++;
@@ -149,6 +157,7 @@ private:
             }
         }
 
+        // 将分区点元素放置到正确的位置上
         swap(flights[i + 1], flights[high]);
 
         return i + 1;
@@ -207,7 +216,6 @@ public:
         }
     }
 
-    // Linear search for flights by destination
     void searchFlightsByDestination(const string& destination) {
         cout << "Flights going to " << destination << ":\n";
         bool found = false;
@@ -223,7 +231,6 @@ public:
         }
     }
 
-    // Linear search for flights by departure time
     void searchFlightsByDepartureTime(const string& departureTime) {
         cout << "Flights departing at " << departureTime << ":\n";
         bool found = false;
@@ -239,7 +246,6 @@ public:
         }
     }
 
-    // Linear search for flights by arrival time
     void searchFlightsByArrivalTime(const string& arrivalTime) {
         cout << "Flights arriving at " << arrivalTime << ":\n";
         bool found = false;
@@ -255,7 +261,6 @@ public:
         }
     }
 
-    // Linear search for flights by aircraft type
     void searchFlightsByAircraftType(const string& aircraftType) {
         cout << "Flights with aircraft type " << aircraftType << ":\n";
         bool found = false;
@@ -271,7 +276,6 @@ public:
         }
     }
 
-    // Linear search for flights by ticket price
     void searchFlightsByTicketPrice(double ticketPrice) {
         cout << "Flights with ticket price " << ticketPrice << ":\n";
         bool found = false;
@@ -287,13 +291,13 @@ public:
         }
     }
 
-    // Combined search for flights
+    // 组合查找
     void searchFlightsCombined(const string& departureCity, const string& destination,const string& departureTime, const string& arrivalTime,
                                 const string& aircraftType, double minPrice, double maxPrice) {
 
-        setConsoleColor(GREEN);  // 设置为绿色
+        setConsoleColor(GREEN);
         cout << "Flights matching the criteria:" << endl;
-        resetConsoleColor();  // 恢复默认颜色
+        resetConsoleColor(); 
 
         bool found = false;
 
@@ -310,9 +314,9 @@ public:
         }
 
         if (!found) {
-            setConsoleColor(GREEN);  // 设置为绿色
+            setConsoleColor(GREEN);
             cout << "No flights found matching the criteria.\n";
-            resetConsoleColor();  // 恢复默认颜色
+            resetConsoleColor();
         }
     }
 
