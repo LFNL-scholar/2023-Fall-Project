@@ -19,14 +19,10 @@ public:
     Flight(string number,string depart,string dest,string departTime,string arriveTime,string aircraft,double price)
         : flightNumber(number),departure(depart),destination(dest),departureTime(departTime),arrivalTime(arriveTime),aircraftType(aircraft),ticketPrice(price) {}
 
-    // bool compareByNumber(const Flight& other) const{
-    //     return flightNumber<other.flightNumber;
-    // }
-
-    void swap(Flight& a, Flight& b) {
-        Flight temp = a;
-        a = b;
-        b = temp;
+    void swap(Flight& a,Flight& b){
+        Flight temp=a;
+        a=b;
+        b=temp;
     }
 
     bool compareByDeparture(const string& otherDeparture) const{
@@ -55,7 +51,7 @@ public:
 
 };
 
-void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
+void readFlightsFromFile(vector<Flight>& flights, const string& filename){
     ifstream inputFile(filename);
     if (!inputFile.is_open()){
         cerr<<"Error opening file for reading."<<endl;
@@ -71,7 +67,7 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
         double price;
 
         if(!(iss>>number>>depart>>dest>>departTime>>arriveTime>>aircraft>>price)){
-            cerr<<"Error parsing line in file."<< lineNumber << "." << endl;
+            cerr<<"Error parsing line in file."<<lineNumber<<"."<<endl;
             continue;
         }
 
@@ -82,15 +78,15 @@ void readFlightsFromFile(vector<Flight>& flights, const string& filename) {
 }
 
 //输出区块
-enum ConsoleColor {
-    DEFAULT = 7,
-    RED = 12,
-    GREEN = 10,
-    YELLOW = 14,
-    BLUE = 9,
-    MAGENTA = 13,
-    CYAN = 11,
-    WHITE = 15
+enum ConsoleColor { // 枚举
+    DEFAULT=7,
+    RED=12,
+    GREEN=10,
+    YELLOW=14,
+    BLUE=9,
+    MAGENTA=13,
+    CYAN=11,
+    WHITE=15
 };
 
 void setConsoleColor(ConsoleColor color) {
@@ -376,102 +372,101 @@ int main() {
             int choice = stoi(userChoice);
             switch (choice) {
                 case 1: {
-                string flightNumber;
-                cout << "Enter flight number to search: ";
-                cin >> flightNumber;
-                flightManager.searchFlightByNumber(flightNumber);
-                break;
-            }
-            case 2: {
-                string departureCity;
-                cout << "Enter departure city to search: ";
-                cin >> departureCity;
-                flightManager.searchFlightsByDeparture(departureCity);
-                break;
-            }
-            case 3: {
-                string destination;
-                cout << "Enter destination to search: ";
-                cin >> destination;
-                flightManager.searchFlightsByDestination(destination);
-                break;
-            }
-            case 4: {
-                string departureTime;
-                cout << "Enter departure time to search: ";
-                cin >> departureTime;
-                flightManager.searchFlightsByDepartureTime(departureTime);
-                break;
-            }
-            case 5: {
-                string arrivalTime;
-                cout << "Enter arrival time to search: ";
-                cin >> arrivalTime;
-                flightManager.searchFlightsByArrivalTime(arrivalTime);
-                break;
-            }
-            case 6: {
-                string aircraftType;
-                cout << "Enter aircraft type to search: ";
-                cin >> aircraftType;
-                flightManager.searchFlightsByAircraftType(aircraftType);
-                break;
-            }
-            case 7: {
-                double minPrice, maxPrice;
-                cout << "Enter minimum ticket price: ";
-                cin >> minPrice;
-
-                cout << "Enter maximum ticket price: ";
-                cin >> maxPrice;
-
-                if (minPrice > maxPrice) {
-                    cout << "Invalid price range. Minimum price should be less than or equal to maximum price.\n";
-                } else {
-                    flightManager.searchFlightsByPriceRange(minPrice, maxPrice);
+                    string flightNumber;
+                    cout << "Enter flight number to search: ";
+                    cin >> flightNumber;
+                    flightManager.searchFlightByNumber(flightNumber);
+                    break;
                 }
-                break;
-            }
-            case 8: {
-                string departureCity, destination, departureTime, arrivalTime, aircraftType;
-                double minPrice, maxPrice;
+                case 2: {
+                    string departureCity;
+                    cout << "Enter departure city to search: ";
+                    cin >> departureCity;
+                    flightManager.searchFlightsByDeparture(departureCity);
+                    break;
+                }
+                case 3: {
+                    string destination;
+                    cout << "Enter destination to search: ";
+                    cin >> destination;
+                    flightManager.searchFlightsByDestination(destination);
+                    break;
+                }
+                case 4: {
+                    string departureTime;
+                    cout << "Enter departure time to search: ";
+                    cin >> departureTime;
+                    flightManager.searchFlightsByDepartureTime(departureTime);
+                    break;
+                }
+                case 5: {
+                    string arrivalTime;
+                    cout << "Enter arrival time to search: ";
+                    cin >> arrivalTime;
+                    flightManager.searchFlightsByArrivalTime(arrivalTime);
+                    break;
+                }
+                case 6: {
+                    string aircraftType;
+                    cout << "Enter aircraft type to search: ";
+                    cin >> aircraftType;
+                    flightManager.searchFlightsByAircraftType(aircraftType);
+                    break;
+                }
+                case 7: {
+                    double minPrice, maxPrice;
+                    cout << "Enter minimum ticket price: ";
+                    cin >> minPrice;
 
-                cout << "Enter departure city (or leave empty): ";
-                cin.ignore(); // Ignore any newline characters in the input buffer
-                getline(cin, departureCity);
+                    cout << "Enter maximum ticket price: ";
+                    cin >> maxPrice;
 
-                cout << "Enter destination (or leave empty): ";
-                getline(cin, destination);
+                    if (minPrice > maxPrice) {
+                        cout << "Invalid price range. Minimum price should be less than or equal to maximum price.\n";
+                    } else {
+                        flightManager.searchFlightsByPriceRange(minPrice, maxPrice);
+                    }
+                    break;
+                }
+                case 8: {
+                    string departureCity, destination, departureTime, arrivalTime, aircraftType;
+                    double minPrice, maxPrice;
 
-                cout << "Enter departure time (or leave empty): ";
-                getline(cin, departureTime);
+                    cout << "Enter departure city (or leave empty): ";
+                    cin.ignore();
+                    getline(cin, departureCity);
 
-                cout << "Enter arrival time (or leave empty): ";
-                getline(cin, arrivalTime);
+                    cout << "Enter destination (or leave empty): ";
+                    getline(cin, destination);
 
-                cout << "Enter aircraft type (or leave empty): ";
-                getline(cin, aircraftType);
+                    cout << "Enter departure time (or leave empty): ";
+                    getline(cin, departureTime);
 
-                cout << "Enter minimum ticket price (or enter 0 for any price): ";
-                cin >> minPrice;
+                    cout << "Enter arrival time (or leave empty): ";
+                    getline(cin, arrivalTime);
 
-                cout << "Enter maximum ticket price (or enter 0 for any price): ";
-                cin >> maxPrice;
+                    cout << "Enter aircraft type (or leave empty): ";
+                    getline(cin, aircraftType);
 
-                flightManager.searchFlightsCombined(departureCity, destination, departureTime, arrivalTime, aircraftType, minPrice, maxPrice);
-                break;
-            }
-            case 9:{
-                setConsoleColor(GREEN);
-                cout << "Exiting program.\n";
-                cout << "Thank you for using LFNL TECH Flight Searching System. Have a great day!\n";
-                resetConsoleColor();
-                system("pause");
-                return 0;
-            }
-            default:
-                cout << "Invalid choice. Try again.\n";
-            
+                    cout << "Enter minimum ticket price (or enter 0 for any price): ";
+                    cin >> minPrice;
+
+                    cout << "Enter maximum ticket price (or enter 0 for any price): ";
+                    cin >> maxPrice;
+
+                    flightManager.searchFlightsCombined(departureCity, destination, departureTime, arrivalTime, aircraftType, minPrice, maxPrice);
+                    break;
+                }
+                case 9:{
+                    setConsoleColor(GREEN);
+                    cout << "Exiting program.\n";
+                    cout << "Thank you for using LFNL TECH Flight Searching System. Have a great day!\n";
+                    resetConsoleColor();
+                    system("pause");
+                    return 0;
+                }
+                default:
+                    cout << "Invalid choice. Try again.\n";
             }
         
         }
