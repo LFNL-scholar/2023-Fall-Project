@@ -1,5 +1,3 @@
-//设有一个整数单链表编写函数将其调整为奇数在前，偶数在后。
-
 #include <iostream>
 
 struct ListNode {
@@ -11,7 +9,7 @@ struct ListNode {
 
 void revise(ListNode* &head) {
     ListNode* left = head;
-    ListNode* right = head;
+    ListNode* right = head->next;  // 初始时，right 指向第二个节点
     ListNode* tmp = nullptr;
 
     while (right && right->next) {
@@ -20,7 +18,7 @@ void revise(ListNode* &head) {
             left->value = right->next->value;
             right->next->value = tmp;
             left = left->next;
-            right = left->next;
+            right = left->next->next;  // 更新 right 为 left 的下两个节点
         } else if (left->value % 2 == 0 && right->next->value % 2 == 0) {
             right = right->next;
         } else if (left->value % 2 == 1 && right->next->value % 2 == 1) {
