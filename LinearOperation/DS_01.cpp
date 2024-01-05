@@ -10,7 +10,7 @@ struct ListNode {
 void revise(ListNode* &head) {
     ListNode* left = head;
     ListNode* right = head->next;  // 初始时，right 指向第二个节点
-    ListNode* tmp = nullptr;
+    int tmp = 0;
 
     while (right && right->next) {
         if (left->value % 2 == 0 && right->next->value % 2 == 1) {
@@ -18,7 +18,8 @@ void revise(ListNode* &head) {
             left->value = right->next->value;
             right->next->value = tmp;
             left = left->next;
-            right = left->next->next;  // 更新 right 为 left 的下两个节点
+           // right = left->next->next;  // 更新 right 为 left 的下两个节点
+            right = left->next;
         } else if (left->value % 2 == 0 && right->next->value % 2 == 0) {
             right = right->next;
         } else if (left->value % 2 == 1 && right->next->value % 2 == 1) {
